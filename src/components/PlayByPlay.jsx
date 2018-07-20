@@ -20,7 +20,10 @@ class PlayByPlay extends React.Component {
 				<p>{store.date}</p>
 				<div class="plays" style={{width:500,height:300,overflowY:'auto'}}>
 					{ store.plays.map((play) => (
-						<p style={{fontSize:'40%'}}>{play}</p>
+						<div>
+						<p style={{fontSize:'45%',}}>{play.long}</p>
+						<p style={{fontSize:'33%',color:'#ddd'}}>{play.short}</p>
+						</div>
 					))}
 				</div>
 			</div>

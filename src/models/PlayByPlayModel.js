@@ -3,7 +3,7 @@ import gameData from '../../data/RHL1-29.js'
 
 export default class PlayByPlayModel {
 	@observable plays = []
-	@observable fullPlays = []
+	fullPlaysString = ''
 	@observable currentPlay = 0
 	@observable title = 'Hockey Replay'
 	@observable date = ''
@@ -11,8 +11,8 @@ export default class PlayByPlayModel {
 	parsePlays(data) {
 		let isPlays, isFullPlays = false
 		this.fullPlays = []
+		// get basic play data, and game info
 		this.plays = data.split('\n').map((line) => {
-			console.log('how abotu:', line)
 			if(line.search(/STHSGame_Result/g) > -1) {
 				this.title = line.split('>')[1]
 			} else if(line.search(/STHSGame_NowTime/g) > -1) {
@@ -24,12 +24,21 @@ export default class PlayByPlayModel {
 				isFullPlays = true
 			}
 			if(isFullPlays) {
-				this.fullPlays.push(line)
+				this.fullPlaysString += line
 			}			
 			if(isPlays) {
-				return line.split('<')[0]
+				return { short : line.split('<')[0] }
 			}
 		}).filter(Boolean);
+		// append the full text from the fullPlaysString
+		this.plays = this.plays.map((play) => {
+			let short = play.short
+			let long = this.fullPlaysString.slice(0,this.fullPlaysString.search(short.split(' - ')[1]))
+			this.fullPlaysString = this.fullPlaysString.slice(this.fullPlaysString.search(short.split(' - ')[1]))
+			return { short, long }
+		})
+
+
 	}
 
 	constructor() {
