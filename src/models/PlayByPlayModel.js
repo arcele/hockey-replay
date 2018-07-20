@@ -8,6 +8,22 @@ export default class PlayByPlayModel {
 	@observable title = 'Hockey Replay'
 	@observable date = ''
 
+	getLineChanges(play) {
+		let ret = {}
+		let str = ' - ([^\\.])+ on ice for '
+		let re = new RegExp(str, "g")
+		let matches
+		this.teams.map((team) => {
+			str = ' - ([^\\.])+ on ice for ' + team
+			re = new RegExp(str, "g")
+			matches = play.long.match(re)
+			if(matches && matches.length) {
+				ret[team] = matches
+			}
+		})
+		return ret
+	}
+
 	parsePlays(data) {
 		let isPlays, isFullPlays = false
 		this.fullPlays = []
@@ -35,10 +51,9 @@ export default class PlayByPlayModel {
 			let short = play.short
 			let long = this.fullPlaysString.slice(0,this.fullPlaysString.search(short.split(' - ')[1]))
 			this.fullPlaysString = this.fullPlaysString.slice(this.fullPlaysString.search(short.split(' - ')[1]))
-			return { short, long }
+			let changes = this.getLineChanges({ short, long})
+			return { short, long, changes }
 		})
-
-
 	}
 
 	constructor() {
@@ -51,6 +66,18 @@ export default class PlayByPlayModel {
 
 	@computed get thisPlay() {
 		return this.plays.length ? this.plays[0] : null
+	}
+
+	@computed get homeTeam() {
+		return this.title.split(' vs ')[1]
+	}
+
+	@computed get awayTeam() {
+		return this.title.split( ' vs ')[0]
+	}
+
+	@computed get teams() {
+		return [this.awayTeam, this.homeTeam]
 	}
 
 	@action
