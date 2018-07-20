@@ -46,12 +46,18 @@ export default class PlayByPlayModel {
 				return { short : line.split('<')[0] }
 			}
 		}).filter(Boolean);
+
 		// append the full text from the fullPlaysString
 		this.plays = this.plays.map((play) => {
 			let short = play.short
-			let long = this.fullPlaysString.slice(0,this.fullPlaysString.search(short.split(' - ')[1]))
-			this.fullPlaysString = this.fullPlaysString.slice(this.fullPlaysString.search(short.split(' - ')[1]))
-			let changes = this.getLineChanges({ short, long})
+			let longSearch = short.split(' - ')[1]
+			let long, changes, longIdx
+			if(longSearch) {
+				longIdx = this.fullPlaysString.search(longSearch) + longSearch.length
+				long = this.fullPlaysString.slice(0, longIdx)
+				this.fullPlaysString = this.fullPlaysString.slice(longIdx)
+				changes = this.getLineChanges({ short, long})
+			}
 			return { short, long, changes }
 		})
 	}
