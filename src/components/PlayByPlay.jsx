@@ -16,12 +16,13 @@ class PlayByPlay extends React.Component {
 		const store = this.props.store
 		return(
 			<div>
-				<p>Hey, this is gonna be a game replay, it's going to be really rad.</p>
-				<p>{store.playCount} Plays</p>
-				<p>:{store.thisPlay}</p>
-				{ store.plays.map((play) => (
-					<p>$> {play}</p>
-				))}
+				<p>{store.title}</p>
+				<p>{store.date}</p>
+				<div class="plays" style={{width:500,height:300,overflowY:'auto'}}>
+					{ store.plays.map((play) => (
+						<p style={{fontSize:'40%'}}>{play}</p>
+					))}
+				</div>
 			</div>
 		)
 	}
