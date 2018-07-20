@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import DevTools from "mobx-react-devtools";
 
 import PlayByPlay from './components/PlayByPlay'
-import PlayByPlayModel from './models/PlayByPlay'
+import PlayByPlayModel from './models/PlayByPlayModel'
 
 const store = new PlayByPlayModel();
 
