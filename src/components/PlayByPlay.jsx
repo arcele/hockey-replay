@@ -18,11 +18,12 @@ class PlayByPlay extends React.Component {
 			<div>
 				<p>{store.title}</p>
 				<p>{store.date}</p>
-				<div class="plays" style={{width:500,height:300,overflowY:'auto'}}>
-					{ store.plays.map((play) => (
-						<div>
-						<p style={{fontSize:'45%',}}>{play.long}</p>
-						<p style={{fontSize:'33%',color:'#ddd'}}>{play.short}</p>
+				<div className="plays" style={{width:500,height:300,overflowY:'auto'}}>
+					{ store.plays.map((play, i) => (
+						<div key={`play-${i}`}>
+							<p style={{fontSize:'45%',}}>{play.long}</p>
+							<p style={{fontSize:'33%',color:'#ddd'}}>{play.short}</p>
+							<hr />
 						</div>
 					))}
 				</div>
