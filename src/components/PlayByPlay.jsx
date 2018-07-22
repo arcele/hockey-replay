@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
+import Play from './Play';
 
 @observer
 class PlayByPlay extends React.Component {
@@ -20,12 +21,8 @@ class PlayByPlay extends React.Component {
 				<p>{store.date}</p>
 				<div className="plays" style={{width:500,height:300,overflowY:'auto'}}>
 					{ store.plays.map((play, i) => (
-						<div key={`play-${i}`}>
-							<p style={{fontSize:'45%',}}>{play.long}</p>
-							<p style={{fontSize:'33%',color:'#ddd'}}>{play.short}</p>
-							<hr />
-						</div>
-					))}
+						<Play idx={i} data={play} store={store} />
+					)) }
 				</div>
 			</div>
 		)
