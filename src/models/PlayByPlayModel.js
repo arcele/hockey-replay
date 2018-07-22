@@ -16,9 +16,11 @@ export default class PlayByPlayModel {
 		this.teams.map((team) => {
 			str = ' - ([^\\.])+ on ice for ' + team
 			re = new RegExp(str, "g")
+			// we should now loop through the segments for line changes now
 			matches = play.long.match(re)
 			if(matches && matches.length) {
 				ret[team] = matches
+				ret.play = play
 			}
 		})
 		return ret
@@ -28,6 +30,16 @@ export default class PlayByPlayModel {
 		let isPlays, isFullPlays = false
 		this.fullPlays = []
 		// get basic play data, and game info
+
+		// each "play" in this.plays holds the main play text
+		// with the clock and end of the "full play text"
+		// each play will also contain a group of segments that
+		// hold more information about the play
+
+		// currently each 'play' is just a line from a text file, we should turn this into
+		// an array of 'Play' models so that we can do all of our play related functionality
+		// there, this Model should only be for things related to the actual play by play
+
 		this.plays = data.split('\n').map((line) => {
 			if(line.search(/STHSGame_Result/g) > -1) {
 				this.title = line.split('>')[1]
@@ -43,22 +55,23 @@ export default class PlayByPlayModel {
 				this.fullPlaysString += line
 			}			
 			if(isPlays) {
-				return { short : line.split('<')[0] }
+				return { short : line.split('<')[0] }				
 			}
-		}).filter(Boolean);
+		}).filter((x) => { if(x && x.short != '') { return x } });
 
-		// append the full text from the fullPlaysString
+		// create the play segments here from the fullPlaysString
 		this.plays = this.plays.map((play) => {
 			let short = play.short
 			let longSearch = short.split(' - ')[1]
-			let long, changes, longIdx
+			let long, changes, longIdx, segments
 			if(longSearch) {
 				longIdx = this.fullPlaysString.search(longSearch) + longSearch.length
 				long = this.fullPlaysString.slice(0, longIdx)
+				segments = long.split('.') // run a function on these segments to populate line changes on the segments instead of on the plays
 				this.fullPlaysString = this.fullPlaysString.slice(longIdx)
 				changes = this.getLineChanges({ short, long})
 			}
-			return { short, long, changes }
+			return { short, segments, long, changes }
 		})
 	}
 
@@ -90,5 +103,19 @@ export default class PlayByPlayModel {
 	loadGame(file) {
 		this.file = file
 		console.log('guess we shoudl load:', file)
+	}
+
+	prev() {
+		if(this.currentPlay > 0) {
+			this.currentPlay--
+		}
+		console.log('prev.', this.currentPlay)
+	}
+
+	next() {
+		if(this.currentPlay < this.plays.length - 1) {
+			this.currentPlay++
+		}
+		console.log('next.', this.currentPlay)
 	}
 }

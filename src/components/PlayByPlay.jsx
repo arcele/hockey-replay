@@ -13,6 +13,16 @@ class PlayByPlay extends React.Component {
 		// yes, yes it did
 	}
 
+	prev = () => {
+		// previous play
+		this.props.store.prev()
+	}
+
+	next = () => {
+		// next play
+		this.props.store.next()
+	}
+
 	render() {
 		const store = this.props.store
 		return(
@@ -23,6 +33,10 @@ class PlayByPlay extends React.Component {
 					{ store.plays.map((play, i) => (
 						<Play idx={i} data={play} store={store} />
 					)) }
+				</div>
+				<div className="controls">
+					<a href="#" onClick={this.prev}>Prev</a>
+					<a href="#" onClick={this.next}>Next</a>
 				</div>
 			</div>
 		)
