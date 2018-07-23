@@ -29,14 +29,16 @@ class PlayByPlay extends React.Component {
 			<div>
 				<p>{store.title}</p>
 				<p>{store.date}</p>
+				<p>Currently on play {store.currentPlay} and segment {store.currentSegment}</p>
 				<div className="plays" style={{width:500,height:300,overflowY:'auto'}}>
 					{ store.plays.map((play, i) => (
 						<Play idx={i} data={play} store={store} />
 					)) }
 				</div>
-				<div className="controls">
-					<a href="#" onClick={this.prev}>Prev</a>
-					<a href="#" onClick={this.next}>Next</a>
+				<div className="controls" style={{width:500}}>
+					<a style={{float:"left"}} href="#" onClick={this.prev}>Prev</a>
+
+					<a style={{float:"right"}} href="#" onClick={this.next}>Next</a>
 				</div>
 			</div>
 		)

@@ -5,6 +5,7 @@ export default class PlayByPlayModel {
 	@observable plays = []
 	fullPlaysString = ''
 	@observable currentPlay = 0
+	@observable currentSegment = 0
 	@observable title = 'Hockey Replay'
 	@observable date = ''
 
@@ -68,6 +69,7 @@ export default class PlayByPlayModel {
 				longIdx = this.fullPlaysString.search(longSearch) + longSearch.length
 				long = this.fullPlaysString.slice(0, longIdx)
 				segments = long.split('.') // run a function on these segments to populate line changes on the segments instead of on the plays
+				segments = segments.slice(0, segments.length-1)
 				this.fullPlaysString = this.fullPlaysString.slice(longIdx)
 				changes = this.getLineChanges({ short, long})
 			}
@@ -106,16 +108,24 @@ export default class PlayByPlayModel {
 	}
 
 	prev() {
-		if(this.currentPlay > 0) {
-			this.currentPlay--
+		if(this.currentPlay > 0 || this.currentSegment > 0) { // not the first segment
+			if(this.currentSegment > 0) {
+				this.currentSegment--
+			} else {
+				this.currentPlay--
+				this.currentSegment = this.plays[this.currentPlay].segments.length - 1
+			}
 		}
-		console.log('prev.', this.currentPlay)
 	}
 
-	next() {
-		if(this.currentPlay < this.plays.length - 1) {
-			this.currentPlay++
+	next() {		
+		if(this.currentPlay < this.plays.length - 1) { // not on the last play
+			if(this.plays[this.currentPlay].segments.length - 1 > this.currentSegment) { // more segments
+				this.currentSegment++
+			} else { // end of the play's segments, next play
+				this.currentSegment = 0
+				this.currentPlay++
+			}
 		}
-		console.log('next.', this.currentPlay)
 	}
 }
