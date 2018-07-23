@@ -13,6 +13,23 @@ class PlayByPlay extends React.Component {
 		// yes, yes it did
 	}
 
+	scrollToActive = () => {
+		// this is currently lame and just jumps ahead 25 pixels
+		// need to determine where the scroll top is of the now
+		// 'active' element and scroll to it instead, this works for now though
+		let i = 0
+		let smoothScroll = () => {
+			i++;
+			setTimeout(() => {
+				this.refs.playbyplay.scrollTop += 1
+				if(i < 20) { // scroll top doesn't matches our active el
+					smoothScroll()
+				}
+			}), 25
+		}
+		smoothScroll()
+	}
+
 	prev = () => {
 		// previous play
 		this.props.store.prev()
@@ -21,6 +38,7 @@ class PlayByPlay extends React.Component {
 	next = () => {
 		// next play
 		this.props.store.next()
+		this.scrollToActive()
 	}
 
 	render() {
@@ -30,7 +48,7 @@ class PlayByPlay extends React.Component {
 				<p>{store.title}</p>
 				<p>{store.date}</p>
 				<p>Currently on play {store.currentPlay} and segment {store.currentSegment}</p>
-				<div className="plays" style={{width:500,height:300,overflowY:'auto'}}>
+				<div ref="playbyplay" className="plays" style={{width:500,height:300,overflowY:'auto'}}>
 					{ store.plays.map((play, i) => (
 						<Play idx={i} data={play} store={store} />
 					)) }
