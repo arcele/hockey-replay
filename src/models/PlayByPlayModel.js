@@ -9,10 +9,10 @@ export default class PlayByPlayModel {
 			secs: 0
 		},
 		period : 1,
-		onIce: {
+		lineChanges: {
+			awayTeam: [],
 			homeTeam: [],
-			awayTeam: []
-		}
+		},
 	} // maybe only certain parts of this object should be observable?
 	fullPlaysString = ''
 	@observable currentPlay = 0		// should be Id or Idx
@@ -22,19 +22,16 @@ export default class PlayByPlayModel {
 
 	getLineChanges(text) {
 		let ret = {}
-		let str = ' - ([^\\.])+ on ice for '
-		let re = new RegExp(str, "g")
-		let matches
 		this.teams.map((team) => {
-			str = ' - ([^\\.])+ on ice for ' + team
-			re = new RegExp(str, "g")
-			// we should now loop through the segments for line changes now
-			matches = text.match(re)
-			if(matches && matches.length) {
-				ret[team] = matches
-				ret.text = text
+			if(text.search(` on ice for ${team}`) > -1) {
+				console.log('line change for:', team)
+				ret = {
+					team,
+					text
+				}
 			}
 		})
+		console.log('line change obj:', ret)
 		return ret
 	}
 
@@ -43,10 +40,11 @@ export default class PlayByPlayModel {
 		// eventually we may want this to be an instance of a class, so we can have all
 		// of the segment functionality on the segment?  For now, this is pretty rad
 		// needed still: scoring plays, clock changes, period changes
-		return {
+		let newSeg = {
 			text,
 			lineChanges: this.getLineChanges(text)
 		}
+		return newSeg
 	}
 
 	// takes a STHS simulation output file and creates the relevant objects we need to generate a replay
@@ -138,12 +136,12 @@ export default class PlayByPlayModel {
 	@action
 	// apply a segment to game object
 	processSegment(obj) {
-		if(obj.lineChanges[this.awayTeam]) {
-			console.log("away line change!", obj.lineChanges[this.awayTeam])
-			this.game.onIce.awayTeam = obj.lineChanges[this.awayTeam]
-		} else if(obj.lineChanges[this.homeTeam]) {
-			console.log("home line change!", obj.lineChanges[this.homeTeam])
-			this.game.onIce.homeTeam = obj.lineChanges[this.homeTeam]
+		if(obj.lineChanges) {
+			if(obj.lineChanges.team === this.homeTeam) {
+				this.game.lineChanges.homeTeam.push(obj)
+			} else if(obj.lineChanges.team === this.awayTeam) {
+				this.game.lineChanges.awayTeam.push(obj)
+			}
 		}
 	}
 

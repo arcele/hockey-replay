@@ -78,8 +78,8 @@ class PlayByPlay extends React.Component {
 				</div>
 				<div ref="currentsegment" className="currentSegment" style={{width:500, marginTop: '25'}}>
 					<p>{store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
-					<p>{store.homeTeam} on ice: { store.game.onIce.homeTeam }</p>
-					<p>{store.awayTeam} on ice: { store.game.onIce.awayTeam }</p>
+					<p>{store.homeTeam} line changes: { store.game.lineChanges.homeTeam.length }</p>
+					<p>{store.awayTeam} line changes: { store.game.lineChanges.awayTeam.length }</p>
 				</div>
 			</div>
 		)
