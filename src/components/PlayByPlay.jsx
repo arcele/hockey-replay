@@ -41,6 +41,22 @@ class PlayByPlay extends React.Component {
 		this.scrollToActive()
 	}
 
+	play = () => {
+		// start stepping through plays
+		let playback = () => {
+			this.props.store.playback = setTimeout(() => {
+				this.next()
+				this.play()
+			}, 500)
+		}
+		playback()
+	}
+
+	pause = () => {
+		clearTimeout(this.props.store.playback)
+		// freeze scrolling
+	}
+
 	render() {
 		const store = this.props.store
 		return(
@@ -55,7 +71,8 @@ class PlayByPlay extends React.Component {
 				</div>
 				<div className="controls" style={{width:500}}>
 					<a style={{float:"left"}} href="#" onClick={this.prev}>Prev</a>
-
+					<a style={{float:"left", marginLeft:'20'}} href="#" onClick={this.pause}>Pause</a>
+					<a style={{float:"right", marginLeft:'20'}} href="#" onClick={this.play}>Play</a>
 					<a style={{float:"right"}} href="#" onClick={this.next}>Next</a>
 				</div>
 			</div>
