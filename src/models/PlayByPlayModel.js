@@ -120,7 +120,7 @@ export default class PlayByPlayModel {
 
 	next() {		
 		if(this.currentPlay < this.plays.length - 1) { // not on the last play
-			if(this.plays[this.currentPlay].segments.length - 1 > this.currentSegment) { // more segments
+			if(this.plays[this.currentPlay].segments && this.plays[this.currentPlay].segments.length - 1 > this.currentSegment) { // more segments
 				this.currentSegment++
 			} else { // end of the play's segments, next play
 				this.currentSegment = 0
