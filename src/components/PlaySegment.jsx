@@ -28,7 +28,7 @@ class PlaySegment extends Component {
 				style={styles}
 				key={key}
 			>
-				{playId} : {segmentId} > {data}
+				{playId} : {segmentId} > {data.text}
 			</p>
 		)
 	}

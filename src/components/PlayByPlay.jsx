@@ -10,7 +10,8 @@ class PlayByPlay extends React.Component {
 	@observable gameTitle = 'RHL Game 1-29'
 
 	componentDidMount() {
-		// yes, yes it did
+		// load initial play
+		this.props.store.processSegment(this.props.store.currentSegmentObj)
 	}
 
 	scrollToActive = () => {
@@ -77,6 +78,8 @@ class PlayByPlay extends React.Component {
 				</div>
 				<div ref="currentsegment" className="currentSegment" style={{width:500, marginTop: '25'}}>
 					<p>{store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
+					<p>{store.homeTeam} on ice: { store.game.onIce.homeTeam }</p>
+					<p>{store.awayTeam} on ice: { store.game.onIce.awayTeam }</p>
 				</div>
 			</div>
 		)

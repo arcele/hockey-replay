@@ -3,13 +3,24 @@ import gameData from '../../data/RHL1-29.js'
 
 export default class PlayByPlayModel {
 	@observable plays = []
+	@observable game = {
+		clock: {
+			mins: 20,
+			secs: 0
+		},
+		period : 1,
+		onIce: {
+			homeTeam: [],
+			awayTeam: []
+		}
+	} // maybe only certain parts of this object should be observable?
 	fullPlaysString = ''
-	@observable currentPlay = 0
-	@observable currentSegment = 0
+	@observable currentPlay = 0		// should be Id or Idx
+	@observable currentSegment = 0	// shoudl be Id or Idx
 	@observable title = 'Hockey Replay'
 	@observable date = ''
 
-	getLineChanges(play) {
+	getLineChanges(text) {
 		let ret = {}
 		let str = ' - ([^\\.])+ on ice for '
 		let re = new RegExp(str, "g")
@@ -18,20 +29,30 @@ export default class PlayByPlayModel {
 			str = ' - ([^\\.])+ on ice for ' + team
 			re = new RegExp(str, "g")
 			// we should now loop through the segments for line changes now
-			matches = play.long.match(re)
+			matches = text.match(re)
 			if(matches && matches.length) {
 				ret[team] = matches
-				ret.play = play
+				ret.text = text
 			}
 		})
 		return ret
 	}
 
-	parsePlays(data) {
+	// Takes a play string and returns an object with everything we need to store it
+	newSegment(text) {
+		// eventually we may want this to be an instance of a class, so we can have all
+		// of the segment functionality on the segment?  For now, this is pretty rad
+		// needed still: scoring plays, clock changes, period changes
+		return {
+			text,
+			lineChanges: this.getLineChanges(text)
+		}
+	}
+
+	// takes a STHS simulation output file and creates the relevant objects we need to generate a replay
+	digestData(data) {
 		let isPlays, isFullPlays = false
 		this.fullPlays = []
-		// get basic play data, and game info
-
 		// each "play" in this.plays holds the main play text
 		// with the clock and end of the "full play text"
 		// each play will also contain a group of segments that
@@ -68,17 +89,26 @@ export default class PlayByPlayModel {
 			if(longSearch) {
 				longIdx = this.fullPlaysString.search(longSearch) + longSearch.length
 				long = this.fullPlaysString.slice(0, longIdx)
-				segments = long.split('.') // run a function on these segments to populate line changes on the segments instead of on the plays
-				segments = segments.slice(0, segments.length-1)
+				// currently saving the segments as just the inital strings,
+				// we want these segments to be objects, so that we can decorate
+				// with meta data (line change, score change, etc).
+				// do we want those to be react components?  that are isolated from the render,
+				// which requires state specific data (to know which play segment is active)
+				let segmentTexts = long.split('.') // run a function on these segments to populate line changes on the segments instead of on the plays
+				segmentTexts = segmentTexts.slice(0, segmentTexts.length-1)
+				segments = segmentTexts.map((text) => {
+					// we can add whatever we want on the segment object here
+					return this.newSegment(text)
+				})
 				this.fullPlaysString = this.fullPlaysString.slice(longIdx)
-				changes = this.getLineChanges({ short, long})
+			//	changes = this.getLineChanges({ short, long})
 			}
-			return { short, segments, long, changes }
+			return { short, segments, long, changes, }
 		})
 	}
 
 	constructor() {
-		this.parsePlays(gameData) // eventually grab this asych
+		this.digestData(gameData) // eventually grab this asych
 	}
 
 	@computed get playCount() {
@@ -101,13 +131,25 @@ export default class PlayByPlayModel {
 		return [this.awayTeam, this.homeTeam]
 	}
 
-	@action
-	loadGame(file) {
-		this.file = file
-		console.log('guess we shoudl load:', file)
+	@computed get currentSegmentObj() {
+		return this.plays[this.currentPlay].segments[this.currentSegment]
 	}
 
+	@action
+	// apply a segment to game object
+	processSegment(obj) {
+		if(obj.lineChanges[this.awayTeam]) {
+			console.log("away line change!", obj.lineChanges[this.awayTeam])
+			this.game.onIce.awayTeam = obj.lineChanges[this.awayTeam]
+		} else if(obj.lineChanges[this.homeTeam]) {
+			console.log("home line change!", obj.lineChanges[this.homeTeam])
+			this.game.onIce.homeTeam = obj.lineChanges[this.homeTeam]
+		}
+	}
+
+
 	prev() {
+		// step back into the previous play segment
 		if(this.currentPlay > 0 || this.currentSegment > 0) { // not the first segment
 			if(this.currentSegment > 0) {
 				this.currentSegment--
@@ -116,9 +158,12 @@ export default class PlayByPlayModel {
 				this.currentSegment = this.plays[this.currentPlay].segments.length - 1
 			}
 		}
+		// need to have a reverse process play here.
+		console.log('< new segment:', this.currentSegmentObj)
 	}
 
-	next() {		
+	next() {
+		// step forward to the next play segment
 		if(this.currentPlay < this.plays.length - 1) { // not on the last play
 			if(this.plays[this.currentPlay].segments && this.plays[this.currentPlay].segments.length - 1 > this.currentSegment) { // more segments
 				this.currentSegment++
@@ -127,5 +172,7 @@ export default class PlayByPlayModel {
 				this.currentPlay++
 			}
 		}
+		console.log('> new segment:', this.currentSegmentObj)
+		this.processSegment(this.currentSegmentObj)
 	}
 }

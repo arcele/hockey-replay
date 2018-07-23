@@ -15,7 +15,4 @@ render(
   document.getElementById("root")
 );
 
-store.loadGame('RHL1-29.html')
-
-// playing around in the console
 window.store = store;
