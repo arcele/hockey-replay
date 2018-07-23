@@ -66,7 +66,7 @@ class PlayByPlay extends React.Component {
 				<p>Currently on play {store.currentPlay} and segment {store.currentSegment}</p>
 				<div ref="playbyplay" className="plays" style={{width:500,height:300,overflowY:'auto'}}>
 					{ store.plays.map((play, i) => (
-						<Play idx={i} data={play} store={store} />
+						<Play key={`play-${i}`} idx={i} data={play} store={store} />
 					)) }
 				</div>
 				<div className="controls" style={{width:500}}>
@@ -74,6 +74,9 @@ class PlayByPlay extends React.Component {
 					<a style={{float:"left", marginLeft:'20'}} href="#" onClick={this.pause}>Pause</a>
 					<a style={{float:"right", marginLeft:'20'}} href="#" onClick={this.play}>Play</a>
 					<a style={{float:"right"}} href="#" onClick={this.next}>Next</a>
+				</div>
+				<div ref="currentsegment" className="currentSegment" style={{width:500, marginTop: '25'}}>
+					<p>{store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
 				</div>
 			</div>
 		)

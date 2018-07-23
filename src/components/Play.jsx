@@ -16,7 +16,7 @@ class Play extends React.Component {
 			<div styles={styles} key={`play-${this.props.idx}`} style={styles}>
 				{play.segments && play.segments.map((seg, i) => {
 					return(
-						<PlaySegment store={store} data={seg} segmentId={i} playId={this.props.idx} />
+						<PlaySegment key={`seg-${this.props.idx}-${i}`} store={store} data={seg} segmentId={i} playId={this.props.idx} />
 					)
 				})}
 				<p style={{fontSize:'66%'}}>{play.short}</p>
