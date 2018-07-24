@@ -7,20 +7,18 @@ import PlaySegment from './PlaySegment'
 class Play extends React.Component {
 
 
-	render() {
-		let styles = { fontSize: "66%"}		
+	render() {	
 		const play = this.props.data
 		const store = this.props.store
 
 		return (
-			<div styles={styles} key={`play-${this.props.idx}`} style={styles}>
+			<div className="play" key={`play-${this.props.idx}`}>
 				{play.segments && play.segments.map((seg, i) => {
 					return(
 						<PlaySegment key={`seg-${this.props.idx}-${i}`} store={store} data={seg} segmentId={i} playId={this.props.idx} />
 					)
 				})}
-				<p style={{fontSize:'66%'}}>{play.short}</p>
-				<hr />
+				<p>{play.short}</p>
 			</div>
 		)
 	}

@@ -22,7 +22,7 @@ class PlayByPlay extends React.Component {
 		let smoothScroll = () => {
 			i++;
 			setTimeout(() => {
-				this.refs.playbyplay.scrollTop += 1
+				this.refs.plays.scrollTop += 1
 				if(i < 20) { // scroll top doesn't matches our active el
 					smoothScroll()
 				}
@@ -48,7 +48,7 @@ class PlayByPlay extends React.Component {
 			this.props.store.playback = setTimeout(() => {
 				this.next()
 				this.play()
-			}, 50)
+			}, 500)
 		}
 		playback()
 	}
@@ -62,28 +62,37 @@ class PlayByPlay extends React.Component {
 		const store = this.props.store
 		return(
 			<div>
-				<p>{store.title}</p>
-				<p>{store.date}</p>
-				<p>Currently on play {store.currentPlay} and segment {store.currentSegment}</p>
-				<div ref="playbyplay" className="plays" style={{width:500,height:300,overflowY:'auto'}}>
-					{ store.plays.map((play, i) => (
-						<Play key={`play-${i}`} idx={i} data={play} store={store} />
-					)) }
+				<h1>{store.title}</h1>
+				<h2>{store.date}</h2>
+				<div className="playByPlay">
+					<div ref="plays" className="plays">
+						{ store.plays.map((play, i) => (
+							<Play key={`play-${i}`} idx={i} data={play} store={store} />
+						)) }
+					</div>
+			
+					<div className="controls">
+						<div className="summary">Play: { store.currentPlay}, Segment: {store.currentSegment }</div>
+						<a className="prev" href="#" onClick={this.prev}>Prev</a>
+						<a className="pause" href="#" onClick={this.pause}>Pause</a>
+						<a className="play" href="#" onClick={this.play}>Play</a>
+						<a className="next" href="#" onClick={this.next}>Next</a>
+					</div>
 				</div>
-				<div className="controls" style={{width:500}}>
-					<a style={{float:"left"}} href="#" onClick={this.prev}>Prev</a>
-					<a style={{float:"left", marginLeft:'20'}} href="#" onClick={this.pause}>Pause</a>
-					<a style={{float:"right", marginLeft:'20'}} href="#" onClick={this.play}>Play</a>
-					<a style={{float:"right"}} href="#" onClick={this.next}>Next</a>
-				</div>
-				<div ref="currentsegment" className="currentSegment" style={{width:500, marginTop: '25'}}>
-					<p>{store.awayTeam} on ice:</p>
-					<p style={{fontSize:'40%'}}>{store.onIce.awayTeam.F}</p>
-					<p style={{fontSize:'40%'}}>{store.onIce.awayTeam.D}</p>
-					<p>{store.homeTeam} on ice:</p> 						
-					<p style={{fontSize:'40%'}}>{store.onIce.homeTeam.F}</p>
-					<p style={{fontSize:'40%'}}>{store.onIce.homeTeam.D}</p>
-					<p>{store.plays[store.currentPlay].segments && store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
+				<div className="currentSegment">
+					<div class="lastSegmentText">
+						<p><b>Last Play:</b>{store.plays[store.currentPlay].segments && store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
+					</div>
+					<div className="onIce">
+						<p><b>{store.awayTeam}</b> on ice:</p>
+						<p>{store.onIce.awayTeam.F}</p>
+						<p>{store.onIce.awayTeam.D}</p>
+					</div>
+					<div class="onIce">
+						<p><b>{store.homeTeam}</b> on ice:</p> 						
+						<p>{store.onIce.homeTeam.F}</p>
+						<p>{store.onIce.homeTeam.D}</p>
+					</div>
 
 				</div>
 			</div>
