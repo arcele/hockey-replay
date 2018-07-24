@@ -48,7 +48,7 @@ class PlayByPlay extends React.Component {
 			this.props.store.playback = setTimeout(() => {
 				this.next()
 				this.play()
-			}, 500)
+			}, 50)
 		}
 		playback()
 	}
@@ -77,9 +77,14 @@ class PlayByPlay extends React.Component {
 					<a style={{float:"right"}} href="#" onClick={this.next}>Next</a>
 				</div>
 				<div ref="currentsegment" className="currentSegment" style={{width:500, marginTop: '25'}}>
-					<p>{store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
-					<p>{store.homeTeam} line changes: { store.game.lineChanges.homeTeam.length }</p>
-					<p>{store.awayTeam} line changes: { store.game.lineChanges.awayTeam.length }</p>
+					<p>{store.awayTeam} on ice:</p>
+					<p style={{fontSize:'40%'}}>{store.onIce.awayTeam.F}</p>
+					<p style={{fontSize:'40%'}}>{store.onIce.awayTeam.D}</p>
+					<p>{store.homeTeam} on ice:</p> 						
+					<p style={{fontSize:'40%'}}>{store.onIce.homeTeam.F}</p>
+					<p style={{fontSize:'40%'}}>{store.onIce.homeTeam.D}</p>
+					<p>{store.plays[store.currentPlay].segments && store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
+
 				</div>
 			</div>
 		)

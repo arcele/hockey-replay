@@ -24,14 +24,12 @@ export default class PlayByPlayModel {
 		let ret = {}
 		this.teams.map((team) => {
 			if(text.search(` on ice for ${team}`) > -1) {
-				console.log('line change for:', team)
 				ret = {
 					team,
 					text
 				}
 			}
 		})
-		console.log('line change obj:', ret)
 		return ret
 	}
 
@@ -105,6 +103,15 @@ export default class PlayByPlayModel {
 		})
 	}
 
+	// takes the full line text of a play segment for a line change
+	// and just returns what we want to show for onIce
+	formatOnIce(val) {
+		if(!val) {
+			return undefined
+		}
+		return val.text.split(' - ')[1].split(' are on ice')[0]
+	}
+
 	constructor() {
 		this.digestData(gameData) // eventually grab this asych
 	}
@@ -129,8 +136,29 @@ export default class PlayByPlayModel {
 		return [this.awayTeam, this.homeTeam]
 	}
 
+	@computed get onIce() {
+		return {
+			awayTeam: {
+				'F': this.formatOnIce(this.game.lineChanges.awayTeam.find((chg) => {
+						return(chg.text.search('Forward Lineup #') > -1)
+					})),
+				'D': this.formatOnIce(this.game.lineChanges.awayTeam.find((chg) => {
+						return(chg.text.search('Defense Lineup #') > -1)
+					}))
+			},
+			homeTeam: {
+				'F': this.formatOnIce(this.game.lineChanges.homeTeam.find((chg) => {
+						return(chg.text.search('Forward Lineup #') > -1)
+					})),
+				'D': this.formatOnIce(this.game.lineChanges.homeTeam.find((chg) => {
+						return(chg.text.search('Defense Lineup #') > -1)
+					}))
+			}
+		}
+	}
+
 	@computed get currentSegmentObj() {
-		return this.plays[this.currentPlay].segments[this.currentSegment]
+		return this.plays[this.currentPlay].segments ? this.plays[this.currentPlay].segments[this.currentSegment] : []
 	}
 
 	@action
@@ -138,9 +166,9 @@ export default class PlayByPlayModel {
 	processSegment(obj) {
 		if(obj.lineChanges) {
 			if(obj.lineChanges.team === this.homeTeam) {
-				this.game.lineChanges.homeTeam.push(obj)
+				this.game.lineChanges.homeTeam.unshift(obj)
 			} else if(obj.lineChanges.team === this.awayTeam) {
-				this.game.lineChanges.awayTeam.push(obj)
+				this.game.lineChanges.awayTeam.unshift(obj)
 			}
 		}
 	}
