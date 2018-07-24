@@ -39,13 +39,24 @@ export default class PlayByPlayModel {
 		// try to determine the player with the puck
 		if(text.match(/(.+) wins face-off/i)) {	// winner of a faceoff
 			player = text.match(/(.+) wins face-off/i)[1].trim()
-		}
-
-		if(text.match(/Pass to (.+) in/)) { // pass to player 'in' a new zone
+		} else if(text.match(/Pass to (.+) in/)) { // pass to player 'in' a new zone
 			player = text.match(/Pass to (.+) in/)[1].trim()
 		} else if(text.match(/Pass to (.+)$/)) { // pass to player
 			player = text.match(/Pass to (.+)$/)[1].trim()
-		}
+		} else if(text.match(/Deflect By (.+)$/)) {
+			player = text.match(/Deflect By (.+)$/)[1].trim()
+		} else if(text.match(/Pass By .+  intercepted by (.+)$/)) {
+			player = text.match(/Pass By .+  intercepted by (.+)$/)[1].trim()
+		} else if(text.match(/Free Puck Retrieved by (.+) for .+$/)) {
+			player = text.match(/Free Puck Retrieved by (.+) for .+$/)[1].trim()
+		
+		} else if(
+			text.match(/Shot Misses the Net/) ||
+			text.match(/Puck is out of play/) ||
+			text.match(/ loses puck/)
+			) { // Nobody
+				player = -1
+		} 
 
 		return player
 	}

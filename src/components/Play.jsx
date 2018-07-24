@@ -18,7 +18,6 @@ class Play extends React.Component {
 						<PlaySegment key={`seg-${this.props.idx}-${i}`} store={store} data={seg} segmentId={i} playId={this.props.idx} />
 					)
 				})}
-				<p>{play.short}</p>
 			</div>
 		)
 	}
