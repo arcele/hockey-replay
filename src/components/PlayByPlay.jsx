@@ -80,15 +80,15 @@ class PlayByPlay extends React.Component {
 					</div>
 				</div>
 				<div className="currentSegment">
-					<div class="lastSegmentText">
-						<p><b>Last Play:</b>{store.plays[store.currentPlay].segments && store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
+					<div className="lastSegmentText">
+						<p><b>Last Play:</b> {store.plays[store.currentPlay].segments && store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
 					</div>
 					<div className="onIce">
 						<p><b>{store.awayTeam}</b> on ice:</p>
 						<p>{store.onIce.awayTeam.F}</p>
 						<p>{store.onIce.awayTeam.D}</p>
 					</div>
-					<div class="onIce">
+					<div className="onIce">
 						<p><b>{store.homeTeam}</b> on ice:</p> 						
 						<p>{store.onIce.homeTeam.F}</p>
 						<p>{store.onIce.homeTeam.D}</p>

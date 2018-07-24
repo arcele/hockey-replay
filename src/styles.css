@@ -62,15 +62,17 @@ h2 { font-size: 13pt; }
 }
 
 .onIce {
-	width:215px;
-	margin:0 10px;
-	padding: 0 5px;
+	width:228px;
+	margin:15px 10px 0px 10px;
 	float:left;
 	background:white;
 	border-radius:10px;
 	border:1px solid #ccc;
 	height:175px;
 	font-size:8pt;
+}
+.onIce p {
+	margin: 8 15px;
 }
 
 .lastSegmentText {
@@ -82,5 +84,7 @@ h2 { font-size: 13pt; }
 	font-size:10pt;
 	border-radius:10px;
 	border:1px solid #ccc;
-	padding: 0 8px;
+}
+.lastSegmentText p {
+	margin: 15px 8px;
 }
