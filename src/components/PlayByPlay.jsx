@@ -85,13 +85,15 @@ class PlayByPlay extends React.Component {
 					</div>
 					<div className="onIce">
 						<p><b>{store.awayTeam}</b> on ice:</p>
-						<p>{store.onIce.awayTeam.F}</p>
-						<p>{store.onIce.awayTeam.D}</p>
+						{store.onIce && store.onIce.awayTeam && store.onIce.awayTeam.map((p, i) => {
+							return(<div className="player" key={`player-onice-away-${i}`}>{p}</div>)
+						})}
 					</div>
 					<div className="onIce">
-						<p><b>{store.homeTeam}</b> on ice:</p> 						
-						<p>{store.onIce.homeTeam.F}</p>
-						<p>{store.onIce.homeTeam.D}</p>
+						<p><b>{store.homeTeam}</b> on ice:</p>
+						{store.onIce && store.onIce.homeTeam && store.onIce.homeTeam.map((p, i) => {
+							return(<div className="player" key={`player-onice-home-${i}`}>{p}</div>)
+						})}
 					</div>
 
 				</div>

@@ -104,12 +104,12 @@ export default class PlayByPlayModel {
 	}
 
 	// takes the full line text of a play segment for a line change
-	// and just returns what we want to show for onIce
+	// and just returns an array of all the players within
 	formatOnIce(val) {
 		if(!val) {
 			return undefined
 		}
-		return val.text.split(' - ')[1].split(' are on ice')[0]
+		return val.text.split(' - ')[1].split(' are on ice')[0].split(',')
 	}
 
 	constructor() {
@@ -136,24 +136,24 @@ export default class PlayByPlayModel {
 		return [this.awayTeam, this.homeTeam]
 	}
 
+	// return an object of all players on ice based upon the most recent line changes
 	@computed get onIce() {
+		if(!this.game.lineChanges || (!this.game.lineChanges.awayTeam && !this.game.lineChanges.homeTeam)) {
+			return { awayTeam: [], homeTeam: []}
+		}
+		// this is messy, we should probably store the line changes more cleanly, but
+		// this gives us all the players on the ice
 		return {
-			awayTeam: {
-				'F': this.formatOnIce(this.game.lineChanges.awayTeam.find((chg) => {
+			awayTeam: (this.formatOnIce(this.game.lineChanges.awayTeam.find((chg) => {
 						return(chg.text.search('Forward Lineup #') > -1)
-					})),
-				'D': this.formatOnIce(this.game.lineChanges.awayTeam.find((chg) => {
+					})) || []).concat(this.formatOnIce(this.game.lineChanges.awayTeam.find((chg) => {
 						return(chg.text.search('Defense Lineup #') > -1)
-					}))
-			},
-			homeTeam: {
-				'F': this.formatOnIce(this.game.lineChanges.homeTeam.find((chg) => {
+					}))),
+			homeTeam: (this.formatOnIce(this.game.lineChanges.homeTeam.find((chg) => {
 						return(chg.text.search('Forward Lineup #') > -1)
-					})),
-				'D': this.formatOnIce(this.game.lineChanges.homeTeam.find((chg) => {
+					})) || []).concat(this.formatOnIce(this.game.lineChanges.homeTeam.find((chg) => {
 						return(chg.text.search('Defense Lineup #') > -1)
-					}))
-			}
+					})))
 		}
 	}
 
@@ -185,7 +185,7 @@ export default class PlayByPlayModel {
 			}
 		}
 		// need to have a reverse process play here.
-		console.log('< new segment:', this.currentSegmentObj)
+//		console.log('< new segment:', this.currentSegmentObj)
 	}
 
 	next() {
@@ -198,7 +198,7 @@ export default class PlayByPlayModel {
 				this.currentPlay++
 			}
 		}
-		console.log('> new segment:', this.currentSegmentObj)
+//		console.log('> new segment:', this.currentSegmentObj)
 		this.processSegment(this.currentSegmentObj)
 	}
 }
