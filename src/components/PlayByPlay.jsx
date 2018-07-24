@@ -60,6 +60,7 @@ class PlayByPlay extends React.Component {
 
 	render() {
 		const store = this.props.store
+		let className = 'player'
 		return(
 			<div>
 				<h1>{store.title}</h1>
@@ -86,13 +87,23 @@ class PlayByPlay extends React.Component {
 					<div className="onIce">
 						<p><b>{store.awayTeam}</b> on ice:</p>
 						{store.onIce && store.onIce.awayTeam && store.onIce.awayTeam.map((p, i) => {
-							return(<div className="player" key={`player-onice-away-${i}`}>{p}</div>)
+							if(store.inPossession === p) {
+								className = 'player possession'
+							} else {
+								className = 'player'
+							}
+							return(<div className={className} key={`player-onice-away-${i}`}>{p}</div>)
 						})}
 					</div>
 					<div className="onIce">
 						<p><b>{store.homeTeam}</b> on ice:</p>
 						{store.onIce && store.onIce.homeTeam && store.onIce.homeTeam.map((p, i) => {
-							return(<div className="player" key={`player-onice-home-${i}`}>{p}</div>)
+							if(store.inPossession === p) {
+								className = 'player possession'
+							} else {
+								className = 'player'
+							}
+							return(<div className={className} key={`player-onice-home-${i}`}>{p}</div>)
 						})}
 					</div>
 

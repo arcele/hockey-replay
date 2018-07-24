@@ -83,6 +83,10 @@ h2 { font-size: 13pt; }
 	margin: 3px 8px;
 }
 
+.onIce .player.possession {
+	background: #aaaadd;
+}
+
 
 .lastSegmentText {
 	width:500;

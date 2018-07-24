@@ -13,6 +13,7 @@ export default class PlayByPlayModel {
 			awayTeam: [],
 			homeTeam: [],
 		},
+		possessionPlayer: [],
 	} // maybe only certain parts of this object should be observable?
 	fullPlaysString = ''
 	@observable currentPlay = 0		// should be Id or Idx
@@ -33,6 +34,22 @@ export default class PlayByPlayModel {
 		return ret
 	}
 
+	getPossessionPlayer(text) {
+		let player = undefined
+		// try to determine the player with the puck
+		if(text.match(/(.+) wins face-off/i)) {	// winner of a faceoff
+			player = text.match(/(.+) wins face-off/i)[1].trim()
+		}
+
+		if(text.match(/Pass to (.+) in/)) { // pass to player 'in' a new zone
+			player = text.match(/Pass to (.+) in/)[1].trim()
+		} else if(text.match(/Pass to (.+)$/)) { // pass to player
+			player = text.match(/Pass to (.+)$/)[1].trim()
+		}
+
+		return player
+	}
+
 	// Takes a play string and returns an object with everything we need to store it
 	newSegment(text) {
 		// eventually we may want this to be an instance of a class, so we can have all
@@ -40,7 +57,8 @@ export default class PlayByPlayModel {
 		// needed still: scoring plays, clock changes, period changes
 		let newSeg = {
 			text,
-			lineChanges: this.getLineChanges(text)
+			lineChanges: this.getLineChanges(text),
+			hasPuck: this.getPossessionPlayer(text),
 		}
 		return newSeg
 	}
@@ -81,7 +99,7 @@ export default class PlayByPlayModel {
 		this.plays = this.plays.map((play) => {
 			let short = play.short
 			let longSearch = short.split(' - ')[1]
-			let long, changes, longIdx, segments
+			let long, changes, longIdx, segments, hasPuck
 			if(longSearch) {
 				longIdx = this.fullPlaysString.search(longSearch) + longSearch.length
 				long = this.fullPlaysString.slice(0, longIdx)
@@ -97,9 +115,11 @@ export default class PlayByPlayModel {
 					return this.newSegment(text)
 				})
 				this.fullPlaysString = this.fullPlaysString.slice(longIdx)
+			//	hasPuck = this.getPossessionPlayer(longSearch)
 			//	changes = this.getLineChanges({ short, long})
 			}
-			return { short, segments, long, changes, }
+			// what does this even do?
+			return { short, segments, long, changes, hasPuck, }
 		})
 	}
 
@@ -109,7 +129,7 @@ export default class PlayByPlayModel {
 		if(!val) {
 			return undefined
 		}
-		return val.text.split(' - ')[1].split(' are on ice')[0].split(',')
+		return val.text.split(' - ')[1].split(' are on ice')[0].split(',').map((untrim) => (untrim.trim()))
 	}
 
 	constructor() {
@@ -134,6 +154,11 @@ export default class PlayByPlayModel {
 
 	@computed get teams() {
 		return [this.awayTeam, this.homeTeam]
+	}
+
+	// get the most recent possession player from the possession stack
+	@computed get inPossession() {
+		return this.game.possessionPlayer.length > 0 ? this.game.possessionPlayer[0] : undefined
 	}
 
 	// return an object of all players on ice based upon the most recent line changes
@@ -170,6 +195,10 @@ export default class PlayByPlayModel {
 			} else if(obj.lineChanges.team === this.awayTeam) {
 				this.game.lineChanges.awayTeam.unshift(obj)
 			}
+		}
+		if(obj.hasPuck) {
+			console.log('has puck changed', obj.hasPuck)
+			this.game.possessionPlayer.unshift(obj.hasPuck)
 		}
 	}
 
