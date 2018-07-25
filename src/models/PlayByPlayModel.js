@@ -2,8 +2,10 @@ import { observable, action, computed } from "mobx"
 import gameData from '../../data/RHL1-29.js'
 
 export default class PlayByPlayModel {
-	@observable plays = []
-	@observable game = {
+	@observable plays = []			// all plays for the game
+	@observable currentPlay = 0		// index of the currentPlay in plays
+	@observable currentSegment = 0	// index of the currentSegment within the currentPlay
+	@observable game = {			// current game state at currentPlay/currentSegment
 		clock: {
 			mins: 20,
 			secs: 0
@@ -14,10 +16,10 @@ export default class PlayByPlayModel {
 			homeTeam: [],
 		},
 		possessionPlayer: [],
+		penalizedPlayers: [],
+		puckLocation: -1
 	} // maybe only certain parts of this object should be observable?
 	fullPlaysString = ''
-	@observable currentPlay = 0		// should be Id or Idx
-	@observable currentSegment = 0	// shoudl be Id or Idx
 	@observable title = 'Hockey Replay'
 	@observable date = ''
 
@@ -34,31 +36,61 @@ export default class PlayByPlayModel {
 		return ret
 	}
 
+	// Determine which player has possession of the puck based upon the play text undefined
+	// is returned if it can not be determined, -1 is returned if the puck is free or out of play
 	getPossessionPlayer(text) {
 		let player = undefined
-		// try to determine the player with the puck
-		if(text.match(/(.+) wins face-off/i)) {	// winner of a faceoff
-			player = text.match(/(.+) wins face-off/i)[1].trim()
-		} else if(text.match(/Pass to (.+) in/)) { // pass to player 'in' a new zone
-			player = text.match(/Pass to (.+) in/)[1].trim()
-		} else if(text.match(/Pass to (.+)$/)) { // pass to player
-			player = text.match(/Pass to (.+)$/)[1].trim()
-		} else if(text.match(/Deflect By (.+)$/)) {
-			player = text.match(/Deflect By (.+)$/)[1].trim()
-		} else if(text.match(/Pass By .+  intercepted by (.+)$/)) {
-			player = text.match(/Pass By .+  intercepted by (.+)$/)[1].trim()
-		} else if(text.match(/Free Puck Retrieved by (.+) for .+$/)) {
-			player = text.match(/Free Puck Retrieved by (.+) for .+$/)[1].trim()
-		
-		} else if(
-			text.match(/Shot Misses the Net/) ||
+		// Array of regexes that we'll attempt to match players from via the play text
+		let matches = [
+			/(.+) wins face-off/i,		// face off win by player
+			/Pass to (.+) in.+/,		// Pass to player into a new zone
+			/Pass to (.+)$/,			// Pass to player within the zone
+			/Deflect By (.+)$/,			// Deflection by
+			/.+ intercepted by (.+)$/,	// Pass interception by player
+			/uck .etr..ved by (.+) for .+$/,	// puck picked up by player (retrieved||retreived)
+			/uck .etr..ved by (.+)$/,	// Puck picked up by player (retrieved||retreived)
+			/Stopped by (.+) with.+$/	// Stopped by player (goalie)
+		]
+		// using find so that we only match the first result, i know i could do something better here
+		matches.find((m) => {
+			if(text.match(m)) {
+				player = text.match(m)[1].trim()
+				return true
+			}
+		})
+		// nobodies
+		if(	text.match(/Shot Misses the Net/) ||
 			text.match(/Puck is out of play/) ||
-			text.match(/ loses puck/)
+			text.match(/ loses puck/) ||
+			text.match(/Puck is dumped in/)
 			) { // Nobody
 				player = -1
-		} 
-
+		}
 		return player
+	}
+
+	getPenalizedPlayer(text) {
+		let player = undefined
+		if(text.match(/Penalty to (.+) for .+/)) {
+			player = text.match(/Penalty to (.+) for .+/)[1]
+		}
+		return player
+	}
+
+	// Determine where on the ice the puck is based on the play text, return names are:
+	// 'away||home||neutral||outofplay'
+	getPuckLocation(text) {
+		let zone = undefined
+		if(text.match(/in neutral zone/)) {
+			zone = 'neutral'
+		} else if(text.search(this.homeTeam + ' zone') > -1) {
+			zone = 'home'
+		} else if(text.search(this.awayTeam + ' zone') > -1) {
+			zone = 'away'
+		} else if(text.search(/uck is out of play/) > -1) {
+			zone = 'outofplay'
+		}
+		return zone
 	}
 
 	// Takes a play string and returns an object with everything we need to store it
@@ -70,6 +102,8 @@ export default class PlayByPlayModel {
 			text,
 			lineChanges: this.getLineChanges(text),
 			hasPuck: this.getPossessionPlayer(text),
+			penalizedPlayer: this.getPenalizedPlayer(text),
+			puckLocation: this.getPuckLocation(text)
 		}
 		return newSeg
 	}
@@ -211,6 +245,14 @@ export default class PlayByPlayModel {
 			console.log('has puck changed', obj.hasPuck)
 			this.game.possessionPlayer.unshift(obj.hasPuck)
 		}
+		if(obj.penalizedPlayer) {
+			console.log('player penalized', obj.penalizedPlayer)
+			this.game.penalizedPlayers.unshift(obj.hasPuck)
+		}
+		if(obj.puckLocation) {
+			console.log('puck now in zone:', obj.puckLocation)
+			this.game.puckLocation = obj.puckLocation
+		}
 	}
 
 
@@ -225,6 +267,7 @@ export default class PlayByPlayModel {
 			}
 		}
 		// need to have a reverse process play here.
+		// reverse process play shoudl actually process every single segment up to this point to ensure that it's accurate
 //		console.log('< new segment:', this.currentSegmentObj)
 	}
 

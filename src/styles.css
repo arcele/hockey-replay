@@ -62,7 +62,7 @@ h2 { font-size: 13pt; }
 }
 
 .onIce {
-	width:228px;
+	width:150px;
 	margin:15px 10px 0px 10px;
 	float:left;
 	background:white;
@@ -87,6 +87,35 @@ h2 { font-size: 13pt; }
 	background: #aaaadd;
 }
 
+.ice {
+	/* Rink is 200ft x 85 feet w/ 28 foot corner radius */
+	width:102px;
+	height:240px;
+	margin: 0 25px;
+	float:left;
+	border-radius:34px;
+	border:1px solid #888;
+	background-color: #fafaff;
+}
+.ice .zone.awayZone {
+	/* blue line is 75 feet from end */
+	border-radius: 34px 34px 0 0;
+	height:90px;
+	border-bottom:1px solid #8888ee;
+}
+.ice .zone.neutralZone {
+	/* 50 feet between blue lines */
+	height:60px;
+}
+.ice .zone.homeZone {
+	border-radius:0 0 34px 34px;
+	height:90px;
+	border-top:1px solid #8888ee;
+}
+
+.ice .zone.active {
+	background-color: #ddddff;
+}
 
 .lastSegmentText {
 	width:500;

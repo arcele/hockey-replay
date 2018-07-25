@@ -95,6 +95,11 @@ class PlayByPlay extends React.Component {
 							return(<div className={className} key={`player-onice-away-${i}`}>{p}</div>)
 						})}
 					</div>
+					<div className="ice">
+						<div className={`zone awayZone ${ store.game.puckLocation === 'away' && 'active'}`}></div>
+						<div className={`zone neutralZone ${ store.game.puckLocation === 'neutral' && 'active'}`}></div>
+						<div className={`zone homeZone ${ store.game.puckLocation === 'home' && 'active'}`}></div>
+					</div>
 					<div className="onIce">
 						<p><b>{store.homeTeam}</b> on ice:</p>
 						{store.onIce && store.onIce.homeTeam && store.onIce.homeTeam.map((p, i) => {
