@@ -95,8 +95,15 @@ h2 { font-size: 13pt; }
 	float:left;
 	border-radius:34px;
 	border:1px solid #888;
-	background-color: #fafaff;
+	background-image: url(../img/rink.jpg);
+	background-position: -6px -6px;
+	background-size: 112px auto;
 }
+
+.ice .zone {
+	opacity:0.6;
+}
+
 .ice .zone.awayZone {
 	/* blue line is 75 feet from end */
 	border-radius: 34px 34px 0 0;
