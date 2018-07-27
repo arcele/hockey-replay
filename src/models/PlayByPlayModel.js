@@ -121,6 +121,7 @@ export default class PlayByPlayModel {
 		// an array of 'Play' models so that we can do all of our play related functionality
 		// there, this Model should only be for things related to the actual play by play
 
+
 		this.plays = data.split('\n').map((line) => {
 			if(line.search(/STHSGame_Result/g) > -1) {
 				this.title = line.split('>')[1]
@@ -128,9 +129,15 @@ export default class PlayByPlayModel {
 				this.date = line.split('>')[2].split('<')[0]
 			} else if(line.search(/STHSGame_PlayByPlayTitle/g) > -1) {
 				isPlays = true
-			} else if(line.search(/STHSGame_FullPlayByPlayPeriod/g) > -1) {
+			} else if(line.search(/STHSGame_PlayByPlayPeriod">2nd/g) > -1) {
+				// just store the first period for now
+				isPlays = false
+			} else if(line.search(/"STHSGame_FullPlayByPlayPeriod">1st period/g) > -1) {
 				isPlays = false
 				isFullPlays = true
+			} else if(line.search(/"STHSGame_FullPlayByPlayPeriod">2nd period/g) > -1) {
+				// just store the 1st period for now
+				isFullPlays = false
 			}
 			if(isFullPlays) {
 				this.fullPlaysString += line
@@ -139,6 +146,10 @@ export default class PlayByPlayModel {
 				return { short : line.split('<')[0] }				
 			}
 		}).filter((x) => { if(x && x.short != '') { return x } });
+
+		// there is no 'end of period' play, this allows all play segments after the 
+		// final 'play' to be attached to the correct period
+		this.plays.push(({short: ' - End of Period.'}))
 
 		// create the play segments here from the fullPlaysString
 		this.plays = this.plays.map((play) => {
@@ -164,6 +175,7 @@ export default class PlayByPlayModel {
 			//	changes = this.getLineChanges({ short, long})
 			}
 			// what does this even do?
+			console.log('and we still have :', this.fullPlaysString)
 			return { short, segments, long, changes, hasPuck, }
 		})
 	}
