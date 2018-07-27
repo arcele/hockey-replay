@@ -98,8 +98,12 @@ export default class PlayByPlayModel {
 		// eventually we may want this to be an instance of a class, so we can have all
 		// of the segment functionality on the segment?  For now, this is pretty rad
 		// needed still: scoring plays, clock changes, period changes
+		let outText = text
+		if(text.search('</h4') > -1) {
+			outText = text.split('</h4>')[1]
+		}
 		let newSeg = {
-			text,
+			text: outText,
 			lineChanges: this.getLineChanges(text),
 			hasPuck: this.getPossessionPlayer(text),
 			penalizedPlayer: this.getPenalizedPlayer(text),

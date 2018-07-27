@@ -22,9 +22,9 @@ class PlaySegment extends Component {
 		}
 		return(
 			<div className={className} key={key}>
-				<p>
-					{playId} : {segmentId} > {data.text}
-				</p>
+				<div className="playId">{playId}</div>
+				<div className="segmentId">{segmentId}</div>
+				<div className="text">{data.text}</div>
 			</div>
 		)
 	}

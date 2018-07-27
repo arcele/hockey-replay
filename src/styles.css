@@ -11,9 +11,8 @@ h2 { font-size: 13pt; }
 
 .playByPlay .plays {
 	width:100%;
-	height:300;
+	height:175;
 	overflow-y: auto;
-/*	padding:5px 55px 5px 10px;*/
 	border-bottom: 0px;
 }
 .playByPlay .plays::-webkit-scrollbar { 
@@ -24,16 +23,35 @@ h2 { font-size: 13pt; }
 	width: 100%;
 	padding: 0 10px;
 	font-size: 8pt;
-	border-bottom: 1px solid #efefef;
+	float:left;
 }
 
 .playByPlay .plays .play .segment {
 	font-size: 7pt;
+	float:left;
+	line-height:19px;
+	border-bottom: 1px solid #efefef;
 }
+
 
 .playByPlay .plays .play .segment.active-segment {
 	background-color: #bebeee;
 }
+
+.playByPlay .plays .play .segment .playId, .playByPlay .plays .play .segment .segmentId {
+	float:left;
+	width:15px;
+	font-size:66%;
+	color:#999;
+}
+
+.playByPlay .plays .play .segment .text {
+	float:left;
+	width: 470px;
+}
+
+
+
 
 .playByPlay .controls {
 	width: 100%;
