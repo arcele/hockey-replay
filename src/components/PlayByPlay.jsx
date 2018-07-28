@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import Play from './Play';
+import OnIce from './OnIce'
 
 @observer
 class PlayByPlay extends React.Component {
@@ -84,34 +85,13 @@ class PlayByPlay extends React.Component {
 					<div className="lastSegmentText">
 						<p><b>Last Play:</b> {store.plays[store.currentPlay].segments && store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
 					</div>
-					<div className="onIce">
-						<p><b>{store.awayTeam}</b> on ice:</p>
-						{store.onIce && store.onIce.awayTeam && store.onIce.awayTeam.map((p, i) => {
-							if(store.inPossession === p) {
-								className = 'player possession'
-							} else {
-								className = 'player'
-							}
-							return(<div className={className} key={`player-onice-away-${i}`}>{p}</div>)
-						})}
-					</div>
+					<OnIce store={store} team={store.awayTeam} players={store.onIce && store.onIce.awayTeam ? store.onIce.awayTeam : []} />
 					<div className="ice">
 						<div className={`zone awayZone ${ store.game.puckLocation === 'away' && 'active'}`}></div>
 						<div className={`zone neutralZone ${ store.game.puckLocation === 'neutral' && 'active'}`}></div>
 						<div className={`zone homeZone ${ store.game.puckLocation === 'home' && 'active'}`}></div>
 					</div>
-					<div className="onIce">
-						<p><b>{store.homeTeam}</b> on ice:</p>
-						{store.onIce && store.onIce.homeTeam && store.onIce.homeTeam.map((p, i) => {
-							if(store.inPossession === p) {
-								className = 'player possession'
-							} else {
-								className = 'player'
-							}
-							return(<div className={className} key={`player-onice-home-${i}`}>{p}</div>)
-						})}
-					</div>
-
+					<OnIce store={store} team={store.awayTeam} players={store.onIce && store.onIce.homeTeam ? store.onIce.homeTeam : []} />
 				</div>
 			</div>
 		)
