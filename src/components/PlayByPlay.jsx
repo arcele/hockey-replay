@@ -85,13 +85,13 @@ class PlayByPlay extends React.Component {
 					<div className="lastSegmentText">
 						<p><b>Last Play:</b> {store.plays[store.currentPlay].segments && store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
 					</div>
-					<OnIce store={store} team={store.awayTeam} players={store.onIce && store.onIce.awayTeam ? store.onIce.awayTeam : []} />
+					<OnIce store={store} team={store.awayTeam} players={store.onIce.awayTeam} goalie={store.game.goalies.awayTeam} />
 					<div className="ice">
 						<div className={`zone awayZone ${ store.game.puckLocation === 'away' && 'active'}`}></div>
 						<div className={`zone neutralZone ${ store.game.puckLocation === 'neutral' && 'active'}`}></div>
 						<div className={`zone homeZone ${ store.game.puckLocation === 'home' && 'active'}`}></div>
 					</div>
-					<OnIce store={store} team={store.awayTeam} players={store.onIce && store.onIce.homeTeam ? store.onIce.homeTeam : []} />
+					<OnIce store={store} team={store.awayTeam} players={store.onIce.homeTeam} goalie={store.game.goalies.homeTeam} />
 				</div>
 			</div>
 		)
