@@ -15,6 +15,10 @@ export default class PlayByPlayModel {
 			awayTeam: [],
 			homeTeam: [],
 		},
+		goalies: {
+			awayTeam: [],
+			homeTeam: [],
+		},
 		possessionPlayer: [],
 		penalizedPlayers: [],
 		puckLocation: -1
@@ -175,13 +179,17 @@ export default class PlayByPlayModel {
 					return this.newSegment(text)
 				})
 				this.fullPlaysString = this.fullPlaysString.slice(longIdx)
-			//	hasPuck = this.getPossessionPlayer(longSearch)
-			//	changes = this.getLineChanges({ short, long})
 			}
-			// what does this even do?
-			console.log('and we still have :', this.fullPlaysString)
 			return { short, segments, long, changes, hasPuck, }
 		})
+
+		let goalies = data.match(/Starting :(.+)/g).map((starterLine) => {
+			return starterLine.split(' : ')[1].trim()
+		})
+		this.game.goalies = {
+			awayTeam: goalies[1],
+			homeTeam: goalies[0]
+		}
 	}
 
 	// takes the full line text of a play segment for a line change
