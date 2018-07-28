@@ -3,6 +3,7 @@ import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import Play from './Play';
 import OnIce from './OnIce'
+import Player from './Player'
 
 @observer
 class PlayByPlay extends React.Component {
@@ -87,11 +88,17 @@ class PlayByPlay extends React.Component {
 					</div>
 					<OnIce store={store} team={store.awayTeam} players={store.onIce.awayTeam} goalie={store.game.goalies.awayTeam} />
 					<div className="ice">
-						<div className={`zone awayZone ${ store.game.puckLocation === 'away' && 'active'}`}></div>
+						<div className={`zone awayZone ${ store.game.puckLocation === 'away' && 'active'}`}>
+							<Player position='G' name={store.game.goalies.awayTeam} />
+						</div>
 						<div className={`zone neutralZone ${ store.game.puckLocation === 'neutral' && 'active'}`}></div>
-						<div className={`zone homeZone ${ store.game.puckLocation === 'home' && 'active'}`}></div>
+						<div className={`zone homeZone ${ store.game.puckLocation === 'home' && 'active'}`}>
+							<Player position="G" name={store.game.goalies.homeTeam} />
+						</div>
+						
+
 					</div>
-					<OnIce store={store} team={store.awayTeam} players={store.onIce.homeTeam} goalie={store.game.goalies.homeTeam} />
+					<OnIce store={store} team={store.homeTeam} players={store.onIce.homeTeam} goalie={store.game.goalies.homeTeam} />
 				</div>
 			</div>
 		)

@@ -107,15 +107,15 @@ h2 { font-size: 13pt; }
 
 .ice {
 	/* Rink is 200ft x 85 feet w/ 28 foot corner radius */
-	width:102px;
-	height:240px;
-	margin: 0 25px;
-	float:left;
-	border-radius:34px;
+	width:170px;
+	height:400px;
+	margin: 20px 25px;
+	float:right;
+	border-radius:56px;
 	border:1px solid #888;
 	background-image: url(../img/rink.jpg);
-	background-position: -6px -6px;
-	background-size: 112px auto;
+	background-position: -7px -6px;
+	background-size: 183px auto;
 }
 
 .ice .zone {
@@ -124,22 +124,41 @@ h2 { font-size: 13pt; }
 
 .ice .zone.awayZone {
 	/* blue line is 75 feet from end */
-	border-radius: 34px 34px 0 0;
-	height:90px;
-	border-bottom:1px solid #8888ee;
+	border-radius: 56px 56px 0 0;
+	height:150px;
 }
 .ice .zone.neutralZone {
 	/* 50 feet between blue lines */
-	height:60px;
+	height:100px;
 }
 .ice .zone.homeZone {
-	border-radius:0 0 34px 34px;
-	height:90px;
-	border-top:1px solid #8888ee;
+	border-radius:0 0 56px 56px;
+	height:150px;
 }
 
 .ice .zone.active {
 	background-color: #ddddff;
+}
+
+.ice .zone .player {
+	width:30px;
+	height:30px;
+	border-radius:15px;
+	font-size:8pt;
+	border:1px solid black;
+	overflow:hidden;
+	position: relative;
+	top:15px;
+	left:69px;
+	background-color:#041E41;
+	color: #FFFFFF;
+}
+
+.ice .zone.homeZone .player {
+	top:110px;
+	background:#CE1126;
+	color:#F3BC52;
+
 }
 
 .lastSegmentText {

@@ -187,8 +187,8 @@ export default class PlayByPlayModel {
 			return starterLine.split(' : ')[1].trim()
 		})
 		this.game.goalies = {
-			awayTeam: goalies[1],
-			homeTeam: goalies[0]
+			awayTeam: goalies[0],
+			homeTeam: goalies[1]
 		}
 	}
 
