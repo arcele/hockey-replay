@@ -60,6 +60,24 @@ class PlayByPlay extends React.Component {
 		// freeze scrolling
 	}
 
+	positionByIdx = (idx) => {
+		// temporary function to get a player position by index in the onIce array
+		switch(idx) {
+			case 0:
+				return 'C'
+			case 1:
+				return 'LW'
+			case 2:
+				return 'RW'
+			case 3:
+				return 'LD'
+			case 4:
+				return 'RD'
+			default:
+				return 'G'
+		}
+	}
+
 	render() {
 		const store = this.props.store
 		let className = 'player'
@@ -88,15 +106,17 @@ class PlayByPlay extends React.Component {
 					</div>
 					<OnIce store={store} team={store.awayTeam} players={store.onIce.awayTeam} goalie={store.game.goalies.awayTeam} />
 					<div className="ice">
-						<div className={`zone awayZone ${ store.game.puckLocation === 'away' && 'active'}`}>
-							<Player position='G' name={store.game.goalies.awayTeam} />
-						</div>
+						<div className={`zone awayZone ${ store.game.puckLocation === 'away' && 'active'}`}></div>
 						<div className={`zone neutralZone ${ store.game.puckLocation === 'neutral' && 'active'}`}></div>
-						<div className={`zone homeZone ${ store.game.puckLocation === 'home' && 'active'}`}>
-							<Player position="G" name={store.game.goalies.homeTeam} />
-						</div>
-						
-
+						<div className={`zone homeZone ${ store.game.puckLocation === 'home' && 'active'}`}></div>
+						<Player position='G' number={66} team="awayTeam" name={store.game.goalies.awayTeam} />
+						<Player position='G' number={55} team="homeTeam" name={store.game.goalies.homeTeam} />
+						{store.onIce.awayTeam && store.onIce.awayTeam.map((p, i) => {
+							return(<Player position={this.positionByIdx(i)} number={10 + i} name={p} team="awayTeam" />)
+						})}
+						{store.onIce.homeTeam && store.onIce.homeTeam.map((p, i) => {
+							return(<Player position={this.positionByIdx(i)} number={20 + i} name={p} team="homeTeam" />)
+						})}
 					</div>
 					<OnIce store={store} team={store.homeTeam} players={store.onIce.homeTeam} goalie={store.game.goalies.homeTeam} />
 				</div>
