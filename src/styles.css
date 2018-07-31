@@ -166,6 +166,11 @@ h2 { font-size: 13pt; }
 	color:#F3BC52;
 }
 
+.ice[zone="-1"] .player {
+	/* pucks no where, nobodys nowhere */
+	display:none;
+}
+
 /* default player positions */
 .ice .player[team="awayTeam"][position="G"] {
 	top:20px;
@@ -176,32 +181,29 @@ h2 { font-size: 13pt; }
 	left:75px;
 }
 .ice[zone="away"] .player[team="awayTeam"][position="C"] {
-	top:130px;
+	top:85px;
+	left:62px;
 }
 .ice[zone="home"] .player[team="awayTeam"][position="C"] {
 	top:320px;
 }
-.ice .player[team="awayTeam"][position="LW"] {
-	top: 155px;
+
+
+.ice .player[team="awayTeam"][position="RW"] {
+	top: 140px;
 	left: 15px;
-}
-.ice[zone="away"] .player[team="awayTeam"][position="LW"] {
-	top:115px;
 }
 .ice[zone="home"] .player[team="awayTeam"][position="LW"],
 .ice[zone="home"] .player[team="awayTeam"][position="RW"] {
 	top:300px;
 }
 
-.ice .player[team="awayTeam"][position="RW"] {
-	top: 155px;
+.ice .player[team="awayTeam"][position="LW"] {
+	top: 140px;
 	left: 135px;
 }
-.ice[zone="away"] .player[team="awayTeam"][position="RW"] {
-	top:115px;
-}
 
-.ice .player[team="awayTeam"][position="LD"] {
+.ice .player[team="awayTeam"][position="RD"] {
 	top: 85px;
 	left:45px;
 }
@@ -209,8 +211,17 @@ h2 { font-size: 13pt; }
 .ice[zone="home"] .player[team="awayTeam"][position="RD"] {
 	top:250px;
 }
+.ice[zone="away"] .player[team="awayTeam"][position="LD"],
+.ice[zone="away"] .player[team="awayTeam"][position="RD"] {
+	top:50px;
+	left:30px;
+}
+.ice[zone="away"] .player[team="awayTeam"][position="LD"] {
+	left:118px;
+}
 
-.ice .player[team="awayTeam"][position="RD"] {
+
+.ice .player[team="awayTeam"][position="LD"] {
 	top:85px;
 	left:110px;
 }
@@ -228,13 +239,21 @@ h2 { font-size: 13pt; }
 	top:302px;
 	left:90px;
 }
+.ice[zone="away"] .player[team="homeTeam"][position="C"] {
+	top:65px;
+}
 
-.ice .player[team="homeTeam"][position="LW"] {
+
+.ice .player[team="homeTeam"][position="RW"] {
 	top: 245px;
 	left: 135px;
 }
+.ice[zone="away"] .player[team="homeTeam"][position="LW"],
+.ice[zone="away"] .player[team="homeTeam"][position="RW"] {
+	top:80px;
+}
 
-.ice .player[team="homeTeam"][position="RW"] {
+.ice .player[team="homeTeam"][position="LW"] {
 	top: 245px;
 	left: 15px;
 }
@@ -246,6 +265,12 @@ h2 { font-size: 13pt; }
 	top:335px;
 	left:30px;
 }
+.ice[zone="away"] .player[team="homeTeam"][position="LD"],
+.ice[zone="away"] .player[team="homeTeam"][position="RD"] {
+	top:130px;
+}
+
+
 .ice[zone="home"] .player[team="homeTeam"][position="RD"] {
 	top:335px;
 	left:125px;
