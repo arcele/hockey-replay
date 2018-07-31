@@ -33,29 +33,33 @@ class PlayByPlay extends React.Component {
 		smoothScroll()
 	}
 
-	prev = () => {
+	prev = (e) => {
 		// previous play
+		e.preventDefault()
 		this.props.store.prev()
 	}
 
-	next = () => {
+	next = (e) => {
 		// next play
+		e.preventDefault()
 		this.props.store.next()
 		this.scrollToActive()
 	}
 
-	play = () => {
+	play = (e) => {
 		// start stepping through plays
-		let playback = () => {
+		e.preventDefault()
+		let playback = (e) => {
 			this.props.store.playback = setTimeout(() => {
-				this.next()
-				this.play()
-			}, 500)
+				this.next(e)
+				this.play(e)
+			}, 1200)
 		}
-		playback()
+		playback(e)
 	}
 
-	pause = () => {
+	pause = (e) => {
+		e.preventDefault()
 		clearTimeout(this.props.store.playback)
 		// freeze scrolling
 	}

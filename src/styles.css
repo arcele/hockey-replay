@@ -136,11 +136,11 @@ h2 { font-size: 13pt; }
 	border-radius:0 0 56px 56px;
 	height:150px;
 }
-
+/*
 .ice .zone.active {
 	background-color: #ddddff;
 }
-
+*/
 .ice .player {
 	width:20px;
 	height:20px;
@@ -153,6 +153,13 @@ h2 { font-size: 13pt; }
 	position: absolute;
 	cursor: default;
 }
+
+/* animate the dudes */
+.ice .player {
+	transition-property: top;
+	transition-duration: 900ms; /* this should be a little faster than the play by play */
+}
+
 
 .ice .player[team="awayTeam"] {
 	/* Jets colors */
