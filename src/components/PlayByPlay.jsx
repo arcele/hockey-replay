@@ -78,6 +78,10 @@ class PlayByPlay extends React.Component {
 		}
 	}
 
+	isPossessionPlayer = (name) => {
+		return this.props.store.inPossession === name ? 'yes' : 'nah'
+	}
+
 	render() {
 		const store = this.props.store
 		let className = 'player'
@@ -105,17 +109,17 @@ class PlayByPlay extends React.Component {
 						<p><b>Last Play:</b> {store.plays[store.currentPlay].segments && store.plays[store.currentPlay].segments[store.currentSegment].text}</p>
 					</div>
 					<OnIce store={store} team={store.awayTeam} players={store.onIce.awayTeam} goalie={store.game.goalies.awayTeam} />
-					<div className="ice" zone={store.game.puckLocation}>
+					<div className="ice" zone={store.game.puckLocation} >
 						<div className={`zone awayZone ${ store.game.puckLocation === 'away' && 'active'}`}></div>
 						<div className={`zone neutralZone ${ store.game.puckLocation === 'neutral' && 'active'}`}></div>
 						<div className={`zone homeZone ${ store.game.puckLocation === 'home' && 'active'}`}></div>
-						<Player position='G' number={66} team="awayTeam" name={store.game.goalies.awayTeam} />
-						<Player position='G' number={55} team="homeTeam" name={store.game.goalies.homeTeam} />
+						<Player position='G' number={66} team="awayTeam" possession={this.isPossessionPlayer(store.game.goalies.awayTeam)} name={store.game.goalies.awayTeam} />
+						<Player position='G' number={55} team="homeTeam" possession={this.isPossessionPlayer(store.game.goalies.homeTeam)} name={store.game.goalies.homeTeam} />
 						{store.onIce.awayTeam && store.onIce.awayTeam.map((p, i) => {
-							return(<Player position={this.positionByIdx(i)} number={10 + i} name={p} team="awayTeam" />)
+							return(<Player position={this.positionByIdx(i)} possession={this.isPossessionPlayer(p)} number={10 + i} name={p} team="awayTeam" />)
 						})}
 						{store.onIce.homeTeam && store.onIce.homeTeam.map((p, i) => {
-							return(<Player position={this.positionByIdx(i)} number={20 + i} name={p} team="homeTeam" />)
+							return(<Player position={this.positionByIdx(i)} possession={this.isPossessionPlayer(p)} number={20 + i} name={p} team="homeTeam" />)
 						})}
 					</div>
 					<OnIce store={store} team={store.homeTeam} players={store.onIce.homeTeam} goalie={store.game.goalies.homeTeam} />
