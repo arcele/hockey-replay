@@ -35,24 +35,24 @@ class PlayByPlay extends React.Component {
 
 	prev = (e) => {
 		// previous play
-		e.preventDefault()
+		if(e) e.preventDefault()
 		this.props.store.prev()
 	}
 
 	next = (e) => {
 		// next play
-		e.preventDefault()
+		if(e) e.preventDefault()
 		this.props.store.next()
 		this.scrollToActive()
 	}
 
 	play = (e) => {
 		// start stepping through plays
-		e.preventDefault()
+		if(e) e.preventDefault()
 		let playback = (e) => {
 			this.props.store.playback = setTimeout(() => {
-				this.next(e)
-				this.play(e)
+				this.next()
+				this.play()
 			}, 1200)
 		}
 		playback(e)
@@ -66,6 +66,8 @@ class PlayByPlay extends React.Component {
 
 	positionByIdx = (idx) => {
 		// temporary function to get a player position by index in the onIce array
+		// need to handle power play here, if there's fewer than 5 guys, then 
+		// we need the first two to be PK1, PK2, last 2 can be D, that'd work aight
 		switch(idx) {
 			case 0:
 				return 'C'
