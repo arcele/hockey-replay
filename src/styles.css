@@ -112,7 +112,7 @@ h2 { font-size: 13pt; }
 	margin: 20px 25px;
 	float:right;
 	border-radius:56px;
-	border:1px solid #888;
+	border:3px solid #888;
 	background-image: url(../img/rink.jpg);
 	background-position: -7px -6px;
 	background-size: 183px auto;
@@ -156,8 +156,8 @@ h2 { font-size: 13pt; }
 
 /* animate the dudes */
 .ice .player {
-	transition-property: top;
-	transition-duration: 900ms; /* this should be a little faster than the play by play */
+	transition: all;
+	transition-duration: 1600ms;
 }
 
 
@@ -192,6 +192,10 @@ h2 { font-size: 13pt; }
 	top:175px;
 	left:75px;
 }
+.ice[faceoff="yeah"]:not([zone="neutral"]) .player[team="awayTeam"][position="C"] {
+	left:30px;
+}
+
 .ice[zone="away"] .player[team="awayTeam"][position="C"] {
 	top:85px;
 	left:62px;
@@ -205,6 +209,9 @@ h2 { font-size: 13pt; }
 	top: 140px;
 	left: 15px;
 }
+.ice[faceoff="yeah"]:not([zone="neutral"]) .player[team="awayTeam"][position="RW"] {
+	left: 0px;
+}
 .ice[zone="home"] .player[team="awayTeam"][position="LW"],
 .ice[zone="home"] .player[team="awayTeam"][position="RW"] {
 	top:300px;
@@ -214,11 +221,18 @@ h2 { font-size: 13pt; }
 	top: 140px;
 	left: 135px;
 }
-
+.ice[faceoff="yeah"]:not([zone="neutral"]) .player[team="awayTeam"][position="LW"] {
+	left:75px;
+}
 .ice .player[team="awayTeam"][position="RD"] {
 	top: 85px;
 	left:45px;
 }
+.ice[faceoff="yeah"]:not([zone="neutral"]) .player[team="awayTeam"][position="RD"] {
+	left:0px;
+}
+
+
 .ice[zone="home"] .player[team="awayTeam"][position="LD"],
 .ice[zone="home"] .player[team="awayTeam"][position="RD"] {
 	top:250px;
@@ -231,6 +245,7 @@ h2 { font-size: 13pt; }
 .ice[zone="away"] .player[team="awayTeam"][position="LD"] {
 	left:118px;
 }
+
 
 
 .ice .player[team="awayTeam"][position="LD"] {
@@ -254,12 +269,20 @@ h2 { font-size: 13pt; }
 .ice[zone="away"] .player[team="homeTeam"][position="C"] {
 	top:65px;
 }
-
+.ice[zone="home"][faceoff="yeah"] .player[team="homeTeam"][position="C"] {
+	top:345px;
+	left: 30px;
+}
 
 .ice .player[team="homeTeam"][position="RW"] {
 	top: 245px;
 	left: 135px;
 }
+.ice[zone="home"][faceoff="yeah"] .player[team="homeTeam"][position="RW"] {
+	top:340px;
+	left:75px;
+}
+
 .ice[zone="away"] .player[team="homeTeam"][position="LW"],
 .ice[zone="away"] .player[team="homeTeam"][position="RW"] {
 	top:80px;
@@ -269,6 +292,11 @@ h2 { font-size: 13pt; }
 	top: 245px;
 	left: 15px;
 }
+.ice[zone="home"][faceoff="yeah"] .player[team="homeTeam"][position="LW"] {
+	top:345px;
+	left:0px;
+}
+
 .ice .player[team="homeTeam"][position="LD"] {
 	top:315px;
 	left:45px;
@@ -277,6 +305,16 @@ h2 { font-size: 13pt; }
 	top:335px;
 	left:30px;
 }
+.ice[faceoff="yeah"][zone="home"] .player[team="homeTeam"][position="LD"] {
+	top:375px;
+	left:25px;
+}
+
+
+.ice[zone="home"][faceoff="yeah"] .player[team="homeTeam"][position="LD"] {
+	left:;
+}
+
 .ice[zone="away"] .player[team="homeTeam"][position="LD"],
 .ice[zone="away"] .player[team="homeTeam"][position="RD"] {
 	top:130px;

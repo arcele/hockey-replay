@@ -92,9 +92,14 @@ export default class PlayByPlayModel {
 		} else if(text.search(this.awayTeam + ' zone') > -1) {
 			zone = 'away'
 		} else if(text.search(/uck is out of play/) > -1) {
-			zone = 'outofplay'
+			zone = '-1'
 		}
 		return zone
+	}
+
+	// Determine if the play is a faceoff, return true if it is
+	isFaceOff(text) {
+		return text.search(/wins face-off versus/) > -1
 	}
 
 	// Takes a play string and returns an object with everything we need to store it
@@ -111,7 +116,8 @@ export default class PlayByPlayModel {
 			lineChanges: this.getLineChanges(text),
 			hasPuck: this.getPossessionPlayer(text),
 			penalizedPlayer: this.getPenalizedPlayer(text),
-			puckLocation: this.getPuckLocation(text)
+			puckLocation: this.getPuckLocation(text),
+			isFaceOff: this.isFaceOff(text)
 		}
 		return newSeg
 	}
@@ -277,6 +283,7 @@ export default class PlayByPlayModel {
 			console.log('puck now in zone:', obj.puckLocation)
 			this.game.puckLocation = obj.puckLocation
 		}
+		this.game.isFaceOff = obj.isFaceOff ? 'yeah' : 'nah'
 	}
 
 
