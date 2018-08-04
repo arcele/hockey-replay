@@ -203,11 +203,17 @@ h2 { font-size: 13pt; }
 .ice[zone="home"] .player[team="awayTeam"][position="C"] {
 	top:320px;
 }
-
+.ice[zone="away"] .player[team="awayTeam"][position="C"] {
+	top:35px;
+}
 
 .ice .player[team="awayTeam"][position="RW"] {
 	top: 140px;
 	left: 15px;
+}
+.ice[faceoff="yeah"][zone="away"] .player[team="awayTeam"][position="RW"] {
+	top: 35px;
+	left: 0px;
 }
 .ice[faceoff="yeah"]:not([zone="neutral"]) .player[team="awayTeam"][position="RW"] {
 	left: 0px;
@@ -224,12 +230,21 @@ h2 { font-size: 13pt; }
 .ice[faceoff="yeah"]:not([zone="neutral"]) .player[team="awayTeam"][position="LW"] {
 	left:75px;
 }
+.ice[faceoff="yeah"][zone="away"] .player[team="awayTeam"][position="LW"] {
+	left:75px;
+	top:45px;
+}
+
 .ice .player[team="awayTeam"][position="RD"] {
 	top: 85px;
 	left:45px;
 }
 .ice[faceoff="yeah"]:not([zone="neutral"]) .player[team="awayTeam"][position="RD"] {
 	left:0px;
+}
+.ice[faceoff="yeah"][zone="away"] .player[team="awayTeam"][position="RD"] {
+	left:20px;
+	top:10px;
 }
 
 
@@ -244,6 +259,10 @@ h2 { font-size: 13pt; }
 }
 .ice[zone="away"] .player[team="awayTeam"][position="LD"] {
 	left:118px;
+}
+.ice[zone="away"][faceoff="yeah"] .player[team="awayTeam"][position="LD"] {
+	left:118px;
+	top:45px;
 }
 
 
@@ -269,6 +288,10 @@ h2 { font-size: 13pt; }
 .ice[zone="away"] .player[team="homeTeam"][position="C"] {
 	top:65px;
 }
+.ice[zone="away"][faceoff="yeah"] .player[team="homeTeam"][position="C"] {
+	left:30px;
+}
+
 .ice[zone="home"][faceoff="yeah"] .player[team="homeTeam"][position="C"] {
 	top:345px;
 	left: 30px;
@@ -282,10 +305,22 @@ h2 { font-size: 13pt; }
 	top:340px;
 	left:75px;
 }
+.ice[zone="away"][faceoff="yeah"] .player[team="homeTeam"][position="RW"] {
+	top:255px;
+	left:75px;
+}
 
 .ice[zone="away"] .player[team="homeTeam"][position="LW"],
 .ice[zone="away"] .player[team="homeTeam"][position="RW"] {
 	top:80px;
+}
+
+.ice[zone="away"][faceoff="yeah"] .player[team="homeTeam"][position="LW"]{
+	top:75px;
+	left:0px;
+}
+.ice[zone="away"][faceoff="yeah"] .player[team="homeTeam"][position="RW"] {
+	top:75px;
 }
 
 .ice .player[team="homeTeam"][position="LW"] {
@@ -309,6 +344,10 @@ h2 { font-size: 13pt; }
 	top:375px;
 	left:25px;
 }
+.ice[faceoff="yeah"][zone="away"] .player[team="homeTeam"][position="LD"] {
+	top:125px;
+	left:0px;
+}
 
 
 .ice[zone="home"][faceoff="yeah"] .player[team="homeTeam"][position="LD"] {
@@ -329,6 +368,10 @@ h2 { font-size: 13pt; }
 .ice .player[team="homeTeam"][position="RD"] {
 	top:315px;
 	left:110px;
+}
+
+.ice[zone="away"][faceoff="yeah"] .player[team="homeTeam"][position="RD"] {
+	top:125px;
 }
 
 .lastSegmentText {
