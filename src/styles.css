@@ -31,6 +31,7 @@ h2 { font-size: 13pt; }
 	float:left;
 	line-height:19px;
 	border-bottom: 1px solid #efefef;
+	cursor: hand;
 }
 
 
