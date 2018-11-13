@@ -1,5 +1,5 @@
 import { observable, action, computed } from "mobx"
-import gameData from '../../data/RHL1-29.js'
+import gameData from '../../data/RHL1-256.js'
 
 export default class PlayByPlayModel {
 	@observable plays = []			// all plays for the game
@@ -53,7 +53,8 @@ export default class PlayByPlayModel {
 			/.+ intercepted by (.+)$/,	// Pass interception by player
 			/uck .etr..ved by (.+) for .+$/,	// puck picked up by player (retrieved||retreived)
 			/uck .etr..ved by (.+)$/,	// Puck picked up by player (retrieved||retreived)
-			/Stopped by (.+) with.+$/	// Stopped by player (goalie)
+			/Stopped by (.+) with.+$/,	// Stopped by player (goalie)
+			/Shot Blocked by (.+)$/		// Shot Blocked By
 		]
 		// using find so that we only match the first result, i know i could do something better here
 		matches.find((m) => {
