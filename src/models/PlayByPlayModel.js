@@ -50,7 +50,8 @@ export default class PlayByPlayModel {
 			/Pass to (.+) in.+/,		// Pass to player into a new zone
 			/Pass to (.+)$/,			// Pass to player within the zone
 			/Deflect By (.+)$/,			// Deflection by
-			/.+ intercepted by (.+)$/,	// Pass interception by player
+			/.+ intercepted by (.+) in /,	// Pass interception by player
+			/.+ intercepted by (.+)$/,	// Pass interception by player in another zone
 			/uck .etr..ved by (.+) for .+$/,	// puck picked up by player (retrieved||retreived)
 			/uck .etr..ved by (.+)$/,	// Puck picked up by player (retrieved||retreived)
 			/Stopped by (.+) with.+$/,	// Stopped by player (goalie)
